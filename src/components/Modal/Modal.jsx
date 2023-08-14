@@ -1,14 +1,15 @@
+import { createPortal } from "react-dom";
 import styles from "./Modal.module.css";
 
-export default function Modal({
+const Modal = ({
   visible = false,
   onClick = () => null,
   message = "something went wrong :|",
-}) {
+}) => {
   const prevent = (e) => {
     e.stopPropagation();
   };
-  return (
+  return createPortal(
     visible && (
       <div className={styles.modal} onClick={onClick}>
         <div className={styles.content}>
@@ -19,6 +20,8 @@ export default function Modal({
           </div>
         </div>
       </div>
-    )
+    ),
+    document.body
   );
-}
+};
+export default Modal;

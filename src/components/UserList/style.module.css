@@ -8,3 +8,7 @@
 .user-list p{
     text-align: center;
 }
+
+.user-list ul li.active{
+    color: #34BB54;
+}

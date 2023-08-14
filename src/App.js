@@ -1,13 +1,15 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useReducer } from "react";
 import UserForm from "./components/userform/UserForm";
-import { createPortal } from "react-dom";
 import Modal from "./components/Modal/Modal";
 import UserList from "./components/UserList";
+import Button from "./components/UI/button/Button";
+import userReducer from "./reducers/userReducer";
 
 function App() {
   const [msg, setMsg] = useState(null);
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const form = useRef(null);
+  const [users, dispatch] = useReducer(userReducer, []);
 
   const isVisible = useMemo(() => {
     return msg;
@@ -41,22 +43,35 @@ function App() {
     }
 
     if (isValid) {
-      setUsers((x) => [...x, data]);
+      dispatch({
+        type: "ADD",
+        data: { ...data, id: Math.round(Math.random() * 100) },
+      });
       form.current?.reset();
     }
   };
   const closeModal = () => {
     setMsg(null);
   };
-  const modal = createPortal(
-    <Modal visible={isVisible} onClick={closeModal} message={msg} />,
-    document.body
-  );
+
+  const handleActivateItem = (id) => {
+    dispatch({ type: "TOGGLE_ONE", id });
+  };
+
+  const handleActivateAll = () => {
+    dispatch({ type: "TOGGLE_ALL" });
+  };
+
   return (
     <div>
       <UserForm onSubmit={handleSubmit} ref={form} />
-      <UserList users={users} />
-      {modal}
+      <UserList users={users} onActivateItem={handleActivateItem} />
+      <Modal visible={isVisible} onClick={closeModal} message={msg} />
+      {users.length && (
+        <Button type="button" onClick={handleActivateAll}>
+          Active all
+        </Button>
+      )}
     </div>
   );
 }
