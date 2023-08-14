@@ -1,12 +1,8 @@
 import ButtonStyle from "./Button.module.css";
 
-export default function Button({
-  children,
-  type = "submit",
-  onClick = () => {},
-}) {
+export default function Button({ children, ...others }) {
   return (
-    <button className={ButtonStyle.button} onClick={onClick} type={type}>
+    <button className={ButtonStyle.button} {...others}>
       {children}
     </button>
   );

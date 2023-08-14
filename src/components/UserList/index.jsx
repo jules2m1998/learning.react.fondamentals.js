@@ -1,14 +1,31 @@
 import styles from "./style.module.css";
 
-export default function UserList({ users }) {
+const Li = ({ user, children, onClick = (id) => null, ...other }) => {
+  var handleClick = () => {
+    onClick(user.id);
+  };
+  return (
+    <li key={user.id} {...other} onClick={handleClick}>
+      {user.name} : {user.age}
+    </li>
+  );
+};
+
+export default function UserList({ users, onActivateItem = (id) => null }) {
+  const handleActivateItem = (id) => {
+    onActivateItem(id);
+  };
   return (
     <div className={styles["user-list"]}>
       {!!users.length && (
         <ul>
           {users.map((u) => (
-            <li key={u.name}>
-              {u.name} : {u.age}
-            </li>
+            <Li
+              user={u}
+              className={u.isActive ? styles.active : ""}
+              onClick={handleActivateItem}
+              key={u.id}
+            />
           ))}
         </ul>
       )}
