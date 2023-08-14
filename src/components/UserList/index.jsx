@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styles from "./style.module.css";
+import { CounterContext } from "../../contexts";
 
 const Li = ({ user, children, onClick = (id) => null, ...other }) => {
   var handleClick = () => {
@@ -12,6 +14,7 @@ const Li = ({ user, children, onClick = (id) => null, ...other }) => {
 };
 
 export default function UserList({ users, onActivateItem = (id) => null }) {
+  const [counter] = useContext(CounterContext);
   const handleActivateItem = (id) => {
     onActivateItem(id);
   };
@@ -30,6 +33,7 @@ export default function UserList({ users, onActivateItem = (id) => null }) {
         </ul>
       )}
       {!users.length && <p>empty list !</p>}
+      {counter}
     </div>
   );
 }

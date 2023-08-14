@@ -1,10 +1,12 @@
 import styles from "./UserForm.module.css";
 import FormInput from "../UI/form-input/FormInput";
 import Button from "../UI/button/Button";
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useContext, useImperativeHandle, useRef } from "react";
+import { CounterContext } from "../../contexts";
 
 const UserForm = forwardRef(({ onSubmit = () => null }, ref) => {
   const formRef = useRef(null);
+  const [counter, setCounter] = useContext(CounterContext);
   useImperativeHandle(ref, () => ({
     reset() {
       return formRef.current.reset();
@@ -23,7 +25,10 @@ const UserForm = forwardRef(({ onSubmit = () => null }, ref) => {
     <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
       <FormInput name="name" type="text" label={"Name"} />
       <FormInput name="age" type="number" label={"Age"} />
-      <Button>Save</Button>
+      <Button>Save {counter}</Button>
+      <Button type="button" onClick={(_) => setCounter((x) => x + 1)}>
+        Increment {counter}
+      </Button>
     </form>
   );
 });

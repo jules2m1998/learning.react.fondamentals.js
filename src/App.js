@@ -3,11 +3,13 @@ import UserForm from "./components/userform/UserForm";
 import Modal from "./components/Modal/Modal";
 import UserList from "./components/UserList";
 import Button from "./components/UI/button/Button";
-import userReducer from "./reducers/userReducer";
+import { userReducer } from "./reducers/userReducer";
+import { CounterProvider } from "./Providers/CounterProvider";
 
 function App() {
   const [msg, setMsg] = useState(null);
   // const [users, setUsers] = useState([]);
+  const [counter, setCounter] = useState(0);
   const form = useRef(null);
   const [users, dispatch] = useReducer(userReducer, []);
 
@@ -63,7 +65,7 @@ function App() {
   };
 
   return (
-    <div>
+    <CounterProvider>
       <UserForm onSubmit={handleSubmit} ref={form} />
       <UserList users={users} onActivateItem={handleActivateItem} />
       <Modal visible={isVisible} onClick={closeModal} message={msg} />
@@ -72,7 +74,10 @@ function App() {
           Active all
         </Button>
       )}
-    </div>
+      <Button onClick={(_) => setCounter((x) => x + 1)}>
+        Increment {counter}
+      </Button>
+    </CounterProvider>
   );
 }
 

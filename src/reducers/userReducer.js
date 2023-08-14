@@ -1,4 +1,4 @@
-const userReducer = (state, action) => {
+export const userReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
       return [action.data, ...state];
@@ -12,9 +12,6 @@ const userReducer = (state, action) => {
         return { ...x, isActive: !x.isActive };
       });
     default:
-      throw Error("Unknown action: " + action.type);
+      throw Error(`Unknown action: + ${action.type}`);
   }
 };
-
-
-export default userReducer;
